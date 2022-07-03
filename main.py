@@ -47,10 +47,10 @@ def react_on_question(message):
 def react_on_answer(message):
     logging.info(f'\n~ Answer publishing! \n   - {message.reply_to_message.text}\n   - {message.text}\n')
     if message.chat.id == answers_chat:
-        if message.from_user.username == "@edwy_reed":
+        if message.from_user.username == "edwy_reed":
             message = f'***Вопросик💜:\n ✨ ***{message.reply_to_message.text} \n \n***Ответик💜:\n 🦁 ***{message.text} \n \n{hashtag}'
             bot.send_message(channel_to_publish, message)
-        elif message.from_user.username == "@redbeaniy":
+        elif message.from_user.username == "redbeaniy":
             message = f'***Вопросик💜:\n ✨ ***{message.reply_to_message.text} \n \n***Ответик💜:\n 🐱 ***{message.text} \n \n{hashtag}'
             bot.send_message(channel_to_publish, message)
 
