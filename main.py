@@ -15,6 +15,7 @@ hashtag = os.getenv('HASHTAG')
 bot_name = os.getenv('BOT_NAME')
 diary_name = os.getenv('DIARY_NAME')
 taglist_url = os.getenv('TAGLIST_URL')
+channel_url = os.getenv('CHANNEL_URL')
 chat_url = os.getenv('CHAT_URL')
 shop_url = os.getenv('SHOP_URL')
 master_usr_url = os.getenv('MASTER_USR_URL')
@@ -37,8 +38,9 @@ qa = types.KeyboardButton('❔ Анонимные вопросы ❔')
 tags = types.KeyboardButton('#️⃣ Список тегов сообщества #️⃣')
 chat = types.KeyboardButton('💬 Чат 💬')
 shop = types.KeyboardButton('🛒 Магазин 🛒')
+diary = types.KeyboardButton('🐻 Дневничок 🐻')
 contacts = types.KeyboardButton('📓 Контакты 📓')
-markup.row(qa), markup.row(tags), markup.row(chat, shop), markup.row(contacts)
+markup.row(qa), markup.row(tags), markup.row(chat, shop), markup.row(diary, contacts)
 
 mrkp_cancel = types.ReplyKeyboardMarkup(resize_keyboard=True)
 btn = types.KeyboardButton('Отмена')
@@ -110,6 +112,15 @@ def show_shop(message):
     text = 'Добро пожаловать в милый магазинчик китти-тян✨'
     inline_markup = types.InlineKeyboardMarkup()
     btn = types.InlineKeyboardButton(text = 'Перейти в магазин', url = shop_url)
+    inline_markup.add(btn)
+    bot.send_message(message.chat.id, text, reply_markup=inline_markup)
+
+
+@bot.message_handler(regexp='Дневничок', chat_types='private')
+def show_diary(message):
+    text = f'А вот и ссылочка на наше главное сообщество!\nТыкай кнопочку и делись ссылкой с друзьями: @beariy\_diary'
+    inline_markup = types.InlineKeyboardMarkup()
+    btn = types.InlineKeyboardButton(text = 'Перейти в дневник', url = channel_url)
     inline_markup.add(btn)
     bot.send_message(message.chat.id, text, reply_markup=inline_markup)
 
