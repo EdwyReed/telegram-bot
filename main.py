@@ -4,13 +4,22 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-bot_key = os.getenv('BOT_KEY_beta')
+bot_key = os.getenv('BOT_KEY')
 #chat where bot will publish all messages anonymously
 answers_chat = int(os.getenv('CHAT_FOR_ANSWERS'))
-#channel or chat where bot will publish questions and answers after your reply on question
-channel_to_publish = os.getenv('CHAT_TO_PUBLISH_QA_beta')
-#hashtag that will be added in end of the final post
+#channel or chat where bot will publish questions and answers
+channel_to_publish = os.getenv('CHANNEL_TO_PUBLISH_QA')
+#question and answer will be published with this hashtag
 hashtag = os.getenv('HASHTAG')
+
+bot_name = os.getenv('BOT_NAME')
+diary_name = os.getenv('DIARY_NAME')
+taglist_url = os.getenv('TAGLIST_URL')
+chat_id = os.getenv('CHAT_ID')
+shop_id = os.getenv('SHOP_ID')
+master_username = os.getenv('MASTER_USERNAME')
+little_username = os.getenv('LITTLE_USERNAME')
+
 
 format_str = "%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s"
 logFormatter = logging.Formatter(format_str)
@@ -39,9 +48,9 @@ def send_welcome(message):
     logging.info(f'\n~ New user! \n   - {message.from_user.username}\n')
     bot.send_message(message.chat.id, 'Привет!', reply_markup=markup)
     time.sleep(1)
-    bot.send_message(message.chat.id, 'Это официальный бот сообщества __**Beariy\'s Diary**__!✨')
+    bot.send_message(message.chat.id, f'Это официальный бот сообщества __**{diary_name}**__!✨')
     time.sleep(1)
-    bot.send_message(message.chat.id, 'Меня зовут Бири и я буду помогать тебе во многом!')
+    bot.send_message(message.chat.id, f'Меня зовут {bot_name} и я буду помогать тебе во многом!')
 
 
 @bot.message_handler(regexp='Анонимные вопросы', chat_types='private')
@@ -80,7 +89,7 @@ def react_on_answer(message):
 def show_tags(message):
     text = '**Держи!** Тебе достаточно просто нажать кнопочку и ты сможешь выбрать любой из тегов, просто нажав на него.'
     inline_markup = types.InlineKeyboardMarkup()
-    btn = types.InlineKeyboardButton(text = 'Открыть список тэгов', url = 'https://t.me/beariy_diary/392')
+    btn = types.InlineKeyboardButton(text = 'Открыть список тэгов', url = taglist_url)
     inline_markup.add(btn)
     bot.send_message(message.chat.id, text, reply_markup=inline_markup)
 
@@ -89,7 +98,7 @@ def show_tags(message):
 def show_chat(message):
     text = 'Прекрасно! Мы с нетерпением ждём тебя в нашем чатике, там очень комфортно и спокойно.'
     inline_markup = types.InlineKeyboardMarkup()
-    btn = types.InlineKeyboardButton(text = 'Перейти в чат', url = 'https://t.me/beariy_chat')
+    btn = types.InlineKeyboardButton(text = 'Перейти в чат', url = chat_id)
     inline_markup.add(btn)
     bot.send_message(message.chat.id, text, reply_markup=inline_markup)
 
@@ -98,7 +107,7 @@ def show_chat(message):
 def show_shop(message):
     text = 'Добро пожаловать в милый магазинчик китти-тян✨'
     inline_markup = types.InlineKeyboardMarkup()
-    btn = types.InlineKeyboardButton(text = 'Перейти в магазин', url = 'https://t.me/beariy_shop')
+    btn = types.InlineKeyboardButton(text = 'Перейти в магазин', url = shop_id)
     inline_markup.add(btn)
     bot.send_message(message.chat.id, text, reply_markup=inline_markup)
 
@@ -107,8 +116,8 @@ def show_shop(message):
 def show_contacts(message):
     text = 'Если у вас возникли вопросы или предложения, вы можете написать кому-то из нас лично.'
     inline_markup = types.InlineKeyboardMarkup()
-    btn1 = types.InlineKeyboardButton(text = 'Китти-тяма (Мяпкинс Младшая)', url = 'https://t.me/redbeaniy')
-    btn2 = types.InlineKeyboardButton(text = 'Мяпкинс Старший', url = 'https://t.me/edwy_reed')
+    btn1 = types.InlineKeyboardButton(text = 'Китти-тяма (Мяпкинс Младшая)', url = little_username)
+    btn2 = types.InlineKeyboardButton(text = 'Мяпкинс Старший', url = master_username)
     inline_markup.add(btn1, btn2)
     bot.send_message(message.chat.id, text, reply_markup=inline_markup)
 
