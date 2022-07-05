@@ -15,10 +15,12 @@ hashtag = os.getenv('HASHTAG')
 bot_name = os.getenv('BOT_NAME')
 diary_name = os.getenv('DIARY_NAME')
 taglist_url = os.getenv('TAGLIST_URL')
-chat_id = os.getenv('CHAT_ID')
-shop_id = os.getenv('SHOP_ID')
-master_username = os.getenv('MASTER_USERNAME')
-little_username = os.getenv('LITTLE_USERNAME')
+chat_url = os.getenv('CHAT_URL')
+shop_url = os.getenv('SHOP_URL')
+master_usr_url = os.getenv('MASTER_USR_URL')
+master_nick = os.getenv('MASTER_NICK')
+little_usr_url = os.getenv('LITTLE_USR_URL')
+little_nick = os.getenv('LITTLE_NICK')
 
 
 format_str = "%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s"
@@ -31,11 +33,11 @@ logging.getLogger().addHandler(consoleHandler)
 bot = telebot.TeleBot(bot_key, parse_mode='MARKDOWN')
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-qa = types.KeyboardButton('Анонимные вопросы')
-tags = types.KeyboardButton('Список тегов сообщества')
-chat = types.KeyboardButton('Чат')
-shop = types.KeyboardButton(' Магазин')
-contacts = types.KeyboardButton('Контакты')
+qa = types.KeyboardButton('❔ Анонимные вопросы ❔')
+tags = types.KeyboardButton('#️⃣ Список тегов сообщества #️⃣')
+chat = types.KeyboardButton('💬 Чат 💬')
+shop = types.KeyboardButton('🛒 Магазин 🛒')
+contacts = types.KeyboardButton('📓 Контакты 📓')
 markup.row(qa), markup.row(tags), markup.row(chat, shop), markup.row(contacts)
 
 mrkp_cancel = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -89,7 +91,7 @@ def react_on_answer(message):
 def show_tags(message):
     text = '**Держи!** Тебе достаточно просто нажать кнопочку и ты сможешь выбрать любой из тегов, просто нажав на него.'
     inline_markup = types.InlineKeyboardMarkup()
-    btn = types.InlineKeyboardButton(text = 'Открыть список тэгов', url = taglist_url)
+    btn = types.InlineKeyboardButton(text = 'Открыть список тегов', url = taglist_url)
     inline_markup.add(btn)
     bot.send_message(message.chat.id, text, reply_markup=inline_markup)
 
@@ -98,7 +100,7 @@ def show_tags(message):
 def show_chat(message):
     text = 'Прекрасно! Мы с нетерпением ждём тебя в нашем чатике, там очень комфортно и спокойно.'
     inline_markup = types.InlineKeyboardMarkup()
-    btn = types.InlineKeyboardButton(text = 'Перейти в чат', url = chat_id)
+    btn = types.InlineKeyboardButton(text = 'Перейти в чат', url = chat_url)
     inline_markup.add(btn)
     bot.send_message(message.chat.id, text, reply_markup=inline_markup)
 
@@ -107,7 +109,7 @@ def show_chat(message):
 def show_shop(message):
     text = 'Добро пожаловать в милый магазинчик китти-тян✨'
     inline_markup = types.InlineKeyboardMarkup()
-    btn = types.InlineKeyboardButton(text = 'Перейти в магазин', url = shop_id)
+    btn = types.InlineKeyboardButton(text = 'Перейти в магазин', url = shop_url)
     inline_markup.add(btn)
     bot.send_message(message.chat.id, text, reply_markup=inline_markup)
 
@@ -116,15 +118,15 @@ def show_shop(message):
 def show_contacts(message):
     text = 'Если у вас возникли вопросы или предложения, вы можете написать кому-то из нас лично.'
     inline_markup = types.InlineKeyboardMarkup()
-    btn1 = types.InlineKeyboardButton(text = 'Китти-тяма (Мяпкинс Младшая)', url = little_username)
-    btn2 = types.InlineKeyboardButton(text = 'Мяпкинс Старший', url = master_username)
+    btn1 = types.InlineKeyboardButton(text = little_nick, url = little_usr_url)
+    btn2 = types.InlineKeyboardButton(text = master_nick, url = master_usr_url)
     inline_markup.add(btn1, btn2)
     bot.send_message(message.chat.id, text, reply_markup=inline_markup)
 
 
 @bot.message_handler(func=lambda message: True, chat_types='private')
 def unknown_command(message):
-    text = 'Охх, прости, не совсем тебя понял. Попробуй воспользоваться клавиатурой ниже.'
+    text = 'Охх, прости, не совсем тебя понял, меня недавно обновили. Попробуй воспользоваться клавиатурой ниже.'
     bot.send_message(message.chat.id, text, reply_markup=markup)
         
 
