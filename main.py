@@ -137,7 +137,7 @@ def show_contacts(message):
 
 @bot.message_handler(func=lambda message: True, chat_types='private')
 def unknown_command(message):
-    text = 'Охх, прости, не совсем тебя понял, меня недавно обновили. Попробуй воспользоваться клавиатурой ниже.'
+    text = 'Охх, прости, я не уверена, что поняла тебя, меня недавно обновили. Попробуй воспользоваться клавиатурой ниже.'
     bot.send_message(message.chat.id, text, reply_markup=markup)
         
 
