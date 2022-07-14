@@ -110,7 +110,7 @@ def react_on_answer(message):
     if message.from_user.username == "edwy_reed":
         message_text = f'<b>Вопросик💜:</b>\n ✨ {message.reply_to_message.text or "А текста нет!"} \n \n<b>Ответик💜:</b>\n 🦁 {message.text} \n \n{hashtag}'
     elif message.from_user.username == "redbeaniy":
-        message = f'<b>Вопросик💜:</b>\n ✨ {message.reply_to_message.text or "А текста нет!"} \n \n<b>Ответик💜:</b>\n 🐱 {message.text} \n \n{hashtag}'
+        message_text = f'<b>Вопросик💜:</b>\n ✨ {message.reply_to_message.text or "А текста нет!"} \n \n<b>Ответик💜:</b>\n 🐱 {message.text} \n \n{hashtag}'
 
     if message.reply_to_message.content_type == 'text':
         bot.send_message(channel_to_publish, message_text)
