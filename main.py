@@ -72,22 +72,61 @@ def react_on_question(message):
         'Вам обязательно ответят! Внимательно следите за дневничком, ответ появится там.']
     if message.text == 'Отмена':
         bot.send_message(message.chat.id, 'Как скажешь✨', reply_markup=markup)
-    else:
+        return
+    bot.send_message(answers_chat, '<b>Внимание! Новый вопрос:</b>', reply_markup=None)
+    if message.content_type == 'text':
         bot.reply_to(message, random.choice(reply_vars), reply_markup=markup)
-        bot.send_message(answers_chat, '<b>Внимание! Новый вопрос:</b>')
         bot.send_message(answers_chat, message.text)
+    elif message.content_type == "photo":
+        bot.reply_to(message, random.choice(reply_vars), reply_markup=markup)
+        photo = message.photo[2]
+        bot.send_photo(answers_chat, photo = photo.file_id, caption=message.caption, reply_markup=markup)
+    elif message.content_type == 'animation':
+        bot.reply_to(message, random.choice(reply_vars), reply_markup=markup)
+        bot.send_animation(answers_chat, animation=message.animation.file_id, caption=message.caption, reply_markup=markup)
+    elif message.content_type == 'video':
+        bot.reply_to(message, random.choice(reply_vars), reply_markup=markup)
+        bot.send_video(answers_chat, video=message.video.file_id, caption=message.caption, reply_markup=markup)
+    elif message.content_type == 'document':
+        bot.reply_to(message, random.choice(reply_vars), reply_markup=markup)
+        bot.send_document(answers_chat, document=message.document.file_id, caption=message.caption, reply_markup=markup)
+    elif message.content_type == 'audio':
+        bot.reply_to(message, random.choice(reply_vars), reply_markup=markup)
+        bot.send_audio(answers_chat, audio=message.audio.file_id, caption=message.caption, reply_markup=markup)
+    elif message.content_type == 'voice':
+        bot.reply_to(message, random.choice(reply_vars), reply_markup=markup)
+        bot.send_voice(answers_chat, voice=message.voice.file_id, caption=message.caption, reply_markup=markup)
+    elif message.content_type == 'sticker':
+        bot.reply_to(message, random.choice(reply_vars), reply_markup=markup)
+        bot.send_sticker(answers_chat, sticker=message.sticker.file_id, reply_markup=markup)
 
 
 @bot.message_handler(func=lambda message: True, chat_types='group')
 def react_on_answer(message):
-    logging.info(f'\n~ Answer publishing! \n   - {message.reply_to_message.text}\n   - {message.text}\n')
-    if message.chat.id == answers_chat:
-        if message.from_user.username == "edwy_reed":
-            message = f'<b>Вопросик💜:</b>\n ✨ {message.reply_to_message.text} \n \n<b>Ответик💜:</b>\n 🦁 {message.text} \n \n{hashtag}'
-            bot.send_message(channel_to_publish, message)
-        elif message.from_user.username == "redbeaniy":
-            message = f'<b>Вопросик💜:</b>\n ✨ {message.reply_to_message.text} \n \n<b>Ответик💜:</b>\n 🐱 {message.text} \n \n{hashtag}'
-            bot.send_message(channel_to_publish, message)
+    logging.info(f'\n~ Answer publishing! \n   - {message.reply_to_message.text or message.content_type}\n   - {message.text}\n')
+    if message.chat.id != answers_chat:
+        pass
+        
+    if message.from_user.username == "edwy_reed":
+        message_text = f'<b>Вопросик💜:</b>\n ✨ {message.reply_to_message.text or "А текста нет!"} \n \n<b>Ответик💜:</b>\n 🦁 {message.text} \n \n{hashtag}'
+    elif message.from_user.username == "redbeaniy":
+        message = f'<b>Вопросик💜:</b>\n ✨ {message.reply_to_message.text or "А текста нет!"} \n \n<b>Ответик💜:</b>\n 🐱 {message.text} \n \n{hashtag}'
+
+    if message.reply_to_message.content_type == 'text':
+        bot.send_message(channel_to_publish, message_text)
+    elif message.reply_to_message.content_type == "photo":
+        photo = message.reply_to_message.photo[2]
+        bot.send_photo(channel_to_publish, photo = photo.file_id, caption=message_text)
+    elif message.reply_to_message.content_type == 'animation':
+        bot.send_animation(channel_to_publish, animation=message.reply_to_message.animation.file_id, caption=message_text)
+    elif message.reply_to_message.content_type == 'video':
+        bot.send_video(channel_to_publish, video=message.reply_to_message.video.file_id, caption=message_text)
+    elif message.reply_to_message.content_type == 'document':
+        bot.send_document(channel_to_publish, document=message.reply_to_message.document.file_id, caption=message_text)
+    elif message.reply_to_message.content_type == 'audio':
+        bot.send_audio(channel_to_publish, audio=message.reply_to_message.audio.file_id, caption=message_text)
+    elif message.reply_to_message.content_type == 'voice':
+        bot.send_voice(channel_to_publish, voice=message.reply_to_message.voice.file_id, caption=message_text)
 
 
 @bot.message_handler(regexp='Список тегов сообщества', chat_types='private')
@@ -207,6 +246,5 @@ def show_contacts(message):
 def unknown_command(message):
     text = 'Охх, прости, я не уверена, что поняла тебя, меня недавно обновили. Попробуй воспользоваться клавиатурой ниже.'
     bot.send_message(message.chat.id, text, reply_markup=markup)
-        
 
 bot.infinity_polling()
